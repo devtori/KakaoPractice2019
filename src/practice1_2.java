@@ -1,65 +1,72 @@
 import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class practice1_2 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		
-		Scanner scanner = new Scanner(System.in);
-		
-		int num = scanner.nextInt();
-		
-		byte map1[][] = new byte[num][num];
-		byte map2[][] = new byte[num][num];
-		
-		
-		for (int i = 0; i<num; i++) {
-			int temp = scanner.nextInt();
-			for (int j = num-1; j>=0; j--) {
-				map1[i][j] = (byte) (temp%2);
-				temp=temp/2;
-			}
-		}
-		for (int i = 0; i<num; i++) {
-			int temp = scanner.nextInt();
-			for (int j = num-1; j>=0; j--) {
-				map2[i][j] = (byte) (temp%2);
-				temp=temp/2;
-			}
-		}
-		
-		byte resultMap[][] = new byte[num][num];
-		String[] ans = new String[num];
-		
-		for (int i = 0; i<num; i++) {
-			ans[i]="";
-		}
-		
-		for (int i = 0; i<num; i++) {			
-			for (int j = 0; j<num; j++) {
-				resultMap[i][j] = (byte) (map1[i][j] | map2[i][j]);
-			}
-			
-			for (int j = 0; j<num; j++) {
-				if (resultMap[i][j]==1) {
-					ans[i] = ans[i]+"#";
-				}else {
-					ans[i] = ans[i]+" ";
-				}
-			}
-		}
-		
-//		for (int i = 0; i<num; i++) {			
-//			for (int j = 0; j<num; j++) {
-//				System.out.print(result[i][j]);
-//			}
-//			System.out.println();
-//		}
-		
-		for (int i = 0; i<num; i++) {
-			System.out.println(ans[i]);
-		}
-		
-		
-		}
-		
+        Scanner scanner = new Scanner(System.in);
+        
+        String input = scanner.next();
+        Scanner scoreScan = new Scanner(input);
+        
+        Scanner calcScore = scoreScan.useDelimiter("[0-9]*");
+        
+        String[][] calcMap = new String[][]{{"",""},{"",""},{"",""}};
+        
+        
+        int count = -1;
+        while (calcScore.hasNext()){
+        	String temp = calcScore.next().toString();
+        	if(temp.equals("S")|| temp.equals("D")|| temp.equals("T")) {
+        		count++;
+        		calcMap[count][0] = temp;
+        	}
+        	else if(temp.equals("*")||temp.equals("#")){
+        		calcMap[count][1] = temp;
+        	}
+        }
+        
+        
+        String[] firstScore = input.split("[A-Z](#)*[*]*");
+        
+        int[] score = new int[3];
+        
+        for(int i = 0; i<3; i++){
+        	score[i] = Integer.parseInt(firstScore[i]);
+        	
+        	for(int j = 0; j<2; j++) {
+        		switch(calcMap[i][j]) {
+        		case "S":
+        			score[i] = (int)Math.pow(score[i], 1);
+        			break;
+        		case "D":
+        			score[i] = (int)Math.pow(score[i], 2);
+        			break;
+        		case "T":
+        			score[i] = (int)Math.pow(score[i], 3);
+        			break;
+        		case "*":
+        			if (i == 0) score[i] = score[i]*2;
+        			else {
+        				score[i-1] = score[i-1]*2;
+        				score[i] = score[i]*2;
+        			}
+        			break;
+        		case "#":
+        			score[i] = score[i]*-1;
+        			break;
+        		case "":
+        			break;
+        		}
+        	}
+        	
+        }   
+        
+        int totalScore = score[0] + score[1] + score[2];
+        System.out.print(totalScore);
 	}
+}
+

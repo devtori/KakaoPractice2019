@@ -48,13 +48,6 @@ public class practice1_1 {
 			}
 		}
 		
-//		for (int i = 0; i<num; i++) {			
-//			for (int j = 0; j<num; j++) {
-//				System.out.print(result[i][j]);
-//			}
-//			System.out.println();
-//		}
-		
 		for (int i = 0; i<num; i++) {
 			System.out.println(ans[i]);
 		}
